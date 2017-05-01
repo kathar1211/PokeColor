@@ -40,6 +40,7 @@ var requestHandler = require('request');
 **/
 //Set our port to process.env for hosted or 3000 for local
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 //Setup our headers for CORS support. This will allow CORS
 //support in a browser page. 
@@ -128,6 +129,6 @@ function onRequest(request, response) {
 
 //create an HTTP sever and forward all requests to onRequest.
 //start listening on the specified port
-http.createServer(onRequest).listen(port);
+http.createServer(onRequest).listen(port,ip);
 
 console.log("Listening on 127.0.0.1:" + port);
