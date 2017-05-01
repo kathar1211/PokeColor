@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple Proxy Test</title>
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      form {
+        text-align: center;
+        width: 100%;
+        height: 10%;
+        margin-bottom: 20px;
+      }
+      
+      #response {
+        width: 90%;
+        margin: 0 auto;
+        text-align: center;
+        
+      }
+        
+    
+    </style>
+
+    <script>
+      // Example Links to search for
+      // Eventful API - NEEDS KEY http://api.eventful.com/
+      //    http://api.eventful.com/json/events/search?location=14623&app_key=YOURKEY
+      // USGS Earthquake data - http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+      //    http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson
+      // Pokemon API - https://pokeapi.co/
+      //    http://pokeapi.co/api/v2/pokemon/1/
+      // Star Wars API - https://swapi.co/ 
+      //    http://swapi.co/api/people/1/
+    
+      window.onload = init;
+      
+      function init() {
+        document.querySelector("#proxyForm").addEventListener("submit", sendAjax);
+          document.querySelector("#randomButton").onclick = randomPoke;
+      }
+    
+      //method for searching specific pokemon, based on in class example
+      function sendAjax(e) {
+        var action = document.querySelector("#proxyForm").getAttribute("action");
+        var query = document.querySelector("#url").value;
+        
+        if(!query || query.length === 0) {
+          e.preventDefault();
+          return false;
+        }
+          
+        //turn query into a proper pokeapi url
+        query = "http://pokeapi.co/api/v2/pokemon/" + query;
+        
+        query = encodeURIComponent(query);
+        
+        var url = action + "?url=" + query;
+        
+        //console.dir(url);
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onload = function() {
+          var responseDiv = document.querySelector("#response");
+        
+            //parse the response?
+            var pokemon = JSON.parse(xhr.responseText);
+            if (pokemon.sprites.front_default){
+                responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
+            }
+            else if (pokemon.message){
+                responseDiv.textContent = pokemon.message;
+            }
+            
+          //responseDiv.textContent = xhr.responseText;
+        };
+        
+        xhr.open('GET', url);
+        
+        xhr.send();
+        
+        e.preventDefault();
+        return false;
+      }
+        
+        //method for getting a random poke; just modified version of sendAjax
+    function randomPoke(e){
+        var action = document.querySelector("#proxyForm").getAttribute("action");
+        var num = Math.round(Math.random() * 181) + 1;
+        var query = query = "http://pokeapi.co/api/v2/pokemon/" + num;
+            
+            query = encodeURIComponent(query);
+        
+        var url = action + "?url=" + query;
+        
+        //console.dir(url);
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onload = function() {
+          var responseDiv = document.querySelector("#response");
+        
+            //parse the response?
+            var pokemon = JSON.parse(xhr.responseText);
+            if (pokemon.sprites.front_default){
+                responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
+            }
+            else if (pokemon.message){
+                responseDiv.textContent = pokemon.message;
+            }
+            
+          //responseDiv.textContent = xhr.responseText;
+        };
+        
+        xhr.open('GET', url);
+        
+        xhr.send();
+        
+        e.preventDefault();
+        return false;
+    }
+      
+    </script>
+</head>
+<body>
+  <form id="proxyForm" action="http://127.0.0.1:3000" method="POST">
+      <label for="url">Search Pokemon by Name or Number: </label>
+      <input type="text" name="url" id="url">
+      <input type="submit" value="Submit">
+      <button id="randomButton">Or Get a Random Pokemon</button>
+  </form>
+    
+  <div id="response">
+    
+  </div>
+</body>
+</html>
