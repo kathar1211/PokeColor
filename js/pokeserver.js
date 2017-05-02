@@ -67,11 +67,13 @@ var index = fs.readFileSync(__dirname + "/../index.html");
 //automatically passed in as response so we can add to it and send it back.
 function onRequest(request, response) {
     //Split after the ? mark to get the query string (key=value pairs)
+
     var query = request.url.split('?')[1];
 
     //Parse the querystring into a JS object of variables and values
     //PARAMS MUST BE ENCODED WITH encodeURIComponent
     var params = queryString.parse(query);
+    //console.dir(params);
     
     //check if params does not have a url field (meaning no url came in request)
     if(!params.url) {

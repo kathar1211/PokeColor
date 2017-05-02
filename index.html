@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Simple Proxy Test</title>
+    <title>PokeColor</title>
     <style>
         html, body {
             height: 100%;
@@ -40,6 +40,7 @@
         //    http://swapi.co/api/people/1/
         
         window.onload = init;
+        var loading = "<img src='images/loading.gif'>"
         
         function init() {
             document.querySelector("#proxyForm").addEventListener("submit", sendAjax);
@@ -48,7 +49,8 @@
         
         //method for searching specific pokemon, based on in class example
         function sendAjax(e) {
-            
+            var responseDiv = document.querySelector("#pokemon");
+            responseDiv.innerHTML = loading;
             var action = document.querySelector("#proxyForm").getAttribute("action");
             var query = document.querySelector("#url").value;
             
@@ -69,12 +71,13 @@
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function() {
-                var responseDiv = document.querySelector("#pokemon");
+                
                 
                 //parse the response?
                 var pokemon = JSON.parse(xhr.responseText);
                 if (pokemon.sprites.front_default){
                     responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
+                    getPalette();
                 }
                 else if (pokemon.message){
                     responseDiv.textContent = pokemon.message;
@@ -93,6 +96,8 @@
         
     //method for getting a random poke; just modified version of sendAjax
         function randomPoke(e){
+            var responseDiv = document.querySelector("#pokemon");
+            responseDiv.innerHTML = loading;
             var action = document.querySelector("#proxyForm").getAttribute("action");
             var num = Math.round(Math.random() * 181) + 1;
             var query = query = "http://pokeapi.co/api/v2/pokemon/" + num;
@@ -106,7 +111,7 @@
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function() {
-                var responseDiv = document.querySelector("#pokemon");
+                
                 
                 //parse the response?
                 var pokemon = JSON.parse(xhr.responseText);
@@ -116,7 +121,7 @@
                     
                     //get the palette
                     //getPalette(imgurl);
-                    getPalette();
+                    getPalette(imgurl);
                 }
                 else if (pokemon.message){
                     responseDiv.textContent = pokemon.message;
@@ -134,20 +139,30 @@
         }
         
         //request color palette for pokemon picture
-        function getPalette(){
+        function getPalette(img){
+            
+            //show that palette is loading
+            var responseDiv = document.querySelector('#palette');
+            responseDiv.innerHTML = loading;
+            
             var url = 'http://pictaculous.com/api/1.0/';
             url = encodeURIComponent(url);
             
+            var action = document.querySelector("#proxyForm").getAttribute("action");
+            url = action + "?url=" + url;
+            
             //grab the image from the pokemon div
-            var img = document.querySelector("#pokepic").src;
-            console.dir(img);
-            img = encodeURIComponent(img);
-            console.dir(img);
+            img = document.querySelector("#pokepic").src;
+            //console.dir(img);
+            //img = encodeURIComponent(img);
+            //console.dir(img);
             
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function(){
                 //handle response and display palette
+                
+                console.dir((xhr.responseText));
             }
             
             xhr.open('POST', url, true);
