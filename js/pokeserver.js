@@ -59,6 +59,9 @@ var responseHeaders = {
     "Content-Type": "application/json"
 };
 
+var fs = require('fs');
+var index = fs.readFileSync(__dirname + "/../index.html");
+
 //Method to handle our page requests. The HTTP request from the browser will be
 //automatically passed in as request. The pre-formatted response object will be
 //automatically passed in as response so we can add to it and send it back.
@@ -72,22 +75,28 @@ function onRequest(request, response) {
     
     //check if params does not have a url field (meaning no url came in request)
     if(!params.url) {
-      //write a 400 error code out
-      response.writeHead(400, responseHeaders);
-      
-      //json error message to respond with
-      var responseMessage = {
-        message: "Missing url parameter in request"
-      };
-      
-      //stringify JSON message and write it to response
-      response.write(JSON.stringify(responseMessage));
-      
-      //send response
-      response.end();
-      
-      //end this request by returning from this function
-      return;
+//      //write a 400 error code out
+//      response.writeHead(400, responseHeaders);
+//      
+//      //json error message to respond with
+//      var responseMessage = {
+//        message: "Missing url parameter in request"
+//      };
+//      
+//      //stringify JSON message and write it to response
+//      response.write(JSON.stringify(responseMessage));
+//      
+//      //send response
+//      response.end();
+//      
+//      //end this request by returning from this function
+//      return;
+        
+        //open up the home page
+        response.writeHead(200, {"Content-Type":"text/html"});
+        response.write(index);
+        response.end();
+        return;
     }
     
     //try in case URL is invalid or fails

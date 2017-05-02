@@ -6,7 +6,7 @@
         "npm":"4.2.0"
     },
   "description": "a color palette generator for pokemon fans",
-  "main": "./js/main.js",
+  "main": "./index.html",
   "scripts": {
     "test": "echo \"No Tests\" && exit 1",
     "start": "node ./js/pokeserver.js"
