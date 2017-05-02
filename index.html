@@ -3,129 +3,159 @@
 <head>
     <title>Simple Proxy Test</title>
     <style>
-      html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      
-      form {
-        text-align: center;
-        width: 100%;
-        height: 10%;
-        margin-bottom: 20px;
-      }
-      
-      #response {
-        width: 90%;
-        margin: 0 auto;
-        text-align: center;
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
         
-      }
+        form {
+            text-align: center;
+            width: 100%;
+            height: 10%;
+            margin-bottom: 20px;
+        }
+        
+        #pokemon, #palette {
+            width:150,
+            height:150,
+            margin: 0 auto;
+            text-align: center;
+            
+        }
         
     
     </style>
 
     <script>
-      // Example Links to search for
-      // Eventful API - NEEDS KEY http://api.eventful.com/
-      //    http://api.eventful.com/json/events/search?location=14623&app_key=YOURKEY
-      // USGS Earthquake data - http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
-      //    http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson
-      // Pokemon API - https://pokeapi.co/
-      //    http://pokeapi.co/api/v2/pokemon/1/
-      // Star Wars API - https://swapi.co/ 
-      //    http://swapi.co/api/people/1/
-    
-      window.onload = init;
-      
-      function init() {
-        document.querySelector("#proxyForm").addEventListener("submit", sendAjax);
-          document.querySelector("#randomButton").onclick = randomPoke;
-      }
-    
-      //method for searching specific pokemon, based on in class example
-      function sendAjax(e) {
-        var action = document.querySelector("#proxyForm").getAttribute("action");
-        var query = document.querySelector("#url").value;
+        // Example Links to search for
+        // Eventful API - NEEDS KEY http://api.eventful.com/
+        //    http://api.eventful.com/json/events/search?location=14623&app_key=YOURKEY
+        // USGS Earthquake data - http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+        //    http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson
+        // Pokemon API - https://pokeapi.co/
+        //    http://pokeapi.co/api/v2/pokemon/1/
+        // Star Wars API - https://swapi.co/ 
+        //    http://swapi.co/api/people/1/
         
-        if(!query || query.length === 0) {
-          e.preventDefault();
-          return false;
+        window.onload = init;
+        
+        function init() {
+            document.querySelector("#proxyForm").addEventListener("submit", sendAjax);
+            document.querySelector("#randomButton").onclick = randomPoke;
         }
-          
-        //turn query into a proper pokeapi url
-        query = "http://pokeapi.co/api/v2/pokemon/" + query;
         
-        query = encodeURIComponent(query);
-        
-        var url = action + "?url=" + query;
-        
-        //console.dir(url);
-        
-        var xhr = new XMLHttpRequest();
-        
-        xhr.onload = function() {
-          var responseDiv = document.querySelector("#response");
-        
-            //parse the response?
-            var pokemon = JSON.parse(xhr.responseText);
-            if (pokemon.sprites.front_default){
-                responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
-            }
-            else if (pokemon.message){
-                responseDiv.textContent = pokemon.message;
+        //method for searching specific pokemon, based on in class example
+        function sendAjax(e) {
+            
+            var action = document.querySelector("#proxyForm").getAttribute("action");
+            var query = document.querySelector("#url").value;
+            
+            if(!query || query.length === 0) {
+                e.preventDefault();
+                return false;
             }
             
-          //responseDiv.textContent = xhr.responseText;
-        };
-        
-        xhr.open('GET', url);
-        
-        xhr.send();
-        
-        e.preventDefault();
-        return false;
-      }
-        
-        //method for getting a random poke; just modified version of sendAjax
-    function randomPoke(e){
-        var action = document.querySelector("#proxyForm").getAttribute("action");
-        var num = Math.round(Math.random() * 181) + 1;
-        var query = query = "http://pokeapi.co/api/v2/pokemon/" + num;
+            //turn query into a proper pokeapi url
+            query = "http://pokeapi.co/api/v2/pokemon/" + query;
             
             query = encodeURIComponent(query);
+            
+            var url = action + "?url=" + query;
+            
+            //console.dir(url);
+            
+            var xhr = new XMLHttpRequest();
+            
+            xhr.onload = function() {
+                var responseDiv = document.querySelector("#pokemon");
+                
+                //parse the response?
+                var pokemon = JSON.parse(xhr.responseText);
+                if (pokemon.sprites.front_default){
+                    responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
+                }
+                else if (pokemon.message){
+                    responseDiv.textContent = pokemon.message;
+                }
+                
+                //responseDiv.textContent = xhr.responseText;
+            };
+            
+            xhr.open('GET', url);
+            
+            xhr.send();
+            
+            e.preventDefault();
+            return false;
+        }
         
-        var url = action + "?url=" + query;
+    //method for getting a random poke; just modified version of sendAjax
+        function randomPoke(e){
+            var action = document.querySelector("#proxyForm").getAttribute("action");
+            var num = Math.round(Math.random() * 181) + 1;
+            var query = query = "http://pokeapi.co/api/v2/pokemon/" + num;
+            
+            query = encodeURIComponent(query);
+            
+            var url = action + "?url=" + query;
+            
+            //console.dir(url);
+            
+            var xhr = new XMLHttpRequest();
+            
+            xhr.onload = function() {
+                var responseDiv = document.querySelector("#pokemon");
+                
+                //parse the response?
+                var pokemon = JSON.parse(xhr.responseText);
+                if (pokemon.sprites.front_default){
+                    var imgurl = pokemon.sprites.front_default;
+                    responseDiv.innerHTML = "<img id='pokepic' src=" + imgurl + ">";
+                    
+                    //get the palette
+                    //getPalette(imgurl);
+                    getPalette();
+                }
+                else if (pokemon.message){
+                    responseDiv.textContent = pokemon.message;
+                }
+                
+                //responseDiv.textContent = xhr.responseText;
+            };
+            
+            xhr.open('GET', url);
+            
+            xhr.send();
+            
+            e.preventDefault();
+            return false;
+        }
         
-        //console.dir(url);
-        
-        var xhr = new XMLHttpRequest();
-        
-        xhr.onload = function() {
-          var responseDiv = document.querySelector("#response");
-        
-            //parse the response?
-            var pokemon = JSON.parse(xhr.responseText);
-            if (pokemon.sprites.front_default){
-                responseDiv.innerHTML = "<img src=" + pokemon.sprites.front_default + ">";
-            }
-            else if (pokemon.message){
-                responseDiv.textContent = pokemon.message;
+        //request color palette for pokemon picture
+        function getPalette(){
+            var url = 'http://pictaculous.com/api/1.0/';
+            url = encodeURIComponent(url);
+            
+            //grab the image from the pokemon div
+            var img = document.querySelector("#pokepic").src;
+            console.dir(img);
+            img = encodeURIComponent(img);
+            console.dir(img);
+            
+            var xhr = new XMLHttpRequest();
+            
+            xhr.onload = function(){
+                //handle response and display palette
             }
             
-          //responseDiv.textContent = xhr.responseText;
-        };
+            xhr.open('POST', url, true);
+            //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(img);
+            
+        }
         
-        xhr.open('GET', url);
-        
-        xhr.send();
-        
-        e.preventDefault();
-        return false;
-    }
-      
     </script>
 </head>
 <body>
@@ -135,9 +165,13 @@
       <input type="submit" value="Submit">
       <button id="randomButton">Or Get a Random Pokemon</button>
   </form>
+
+    <div id="pokemon">
     
-  <div id="response">
-    
-  </div>
+    </div>
+    <div id="palette">
+        
+    </div>
+
 </body>
 </html>
