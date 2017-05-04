@@ -69,7 +69,7 @@ function onRequest(request, response) {
     //Split after the ? mark to get the query string (key=value pairs)
 
     var query = request.url.split('?')[1];
-
+    
     //Parse the querystring into a JS object of variables and values
     //PARAMS MUST BE ENCODED WITH encodeURIComponent
     var params = queryString.parse(query);
@@ -77,23 +77,7 @@ function onRequest(request, response) {
     
     //check if params does not have a url field (meaning no url came in request)
     if(!params.url) {
-//      //write a 400 error code out
-//      response.writeHead(400, responseHeaders);
-//      
-//      //json error message to respond with
-//      var responseMessage = {
-//        message: "Missing url parameter in request"
-//      };
-//      
-//      //stringify JSON message and write it to response
-//      response.write(JSON.stringify(responseMessage));
-//      
-//      //send response
-//      response.end();
-//      
-//      //end this request by returning from this function
-//      return;
-        
+   
         //open up the home page
         response.writeHead(200, {"Content-Type":"text/html"});
         response.write(index);
@@ -107,12 +91,10 @@ function onRequest(request, response) {
       response.writeHead(200, responseHeaders);
       
       //make a request to the url and pipe (feed) the returned ajax call to our client response
-      //Here we are connecting the next servers response back to our page. 
-        //var pokemon = JSON.parse(response);
-        //var sprite = pokemon.sprites.front_default;
-        //response = "<img src=" + sprite + ">";
-        
+      //Here we are connecting the next servers response back to our page.  
       requestHandler(params.url).pipe(response);
+        
+        
     }
     catch(exception) {
       console.dir(exception);
