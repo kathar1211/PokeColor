@@ -21,6 +21,7 @@
             margin: 0 auto;
             text-align: center;
             display: block;
+            width: 160px;
             
         }
         
@@ -43,10 +44,11 @@
         }
         
         #palette{
-            width: 200px;
+            width: 400px;
+            height:150px;
             margin: 0 auto;
             text-align: center;
-            display: block;
+            display: inline;
             /*float:right;*/
             
             
@@ -58,6 +60,7 @@
         
     
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
         // Example Links to search for
         // Eventful API - NEEDS KEY http://api.eventful.com/
@@ -70,7 +73,7 @@
         //    http://swapi.co/api/people/1/
         
         window.onload = init;
-        var loading = "<img src='images/loading.gif'>"
+        var loading = "<img src='./images/loading.gif'>"
         
         //keep track of requests for shiny or female pokemon
         var shiny = false;
@@ -81,12 +84,13 @@
         
         function init() {
             
-            document.querySelector("#proxyForm").addEventListener("submit", sendAjax);
+            document.querySelector("#proxyForm").addEventListener("submit", searchPoke);
             document.querySelector("#randomButton").onclick = randomPoke;
             
             //set up options for shiny ver
-            document.querySelector("#checkshiny").onchange = function(){
+            document.querySelector("#checkshiny").onchange = function(e){
                 shiny = document.querySelector("#checkshiny").checked;
+                reloadPoke(e);
             }
             
             //female ver
@@ -97,15 +101,32 @@
                 else if (e.target.value == "false"){
                     female = false;
                 }
+                reloadPoke(e);
             };
         }
         
-        //method for searching specific pokemon, based on in class example
-        function sendAjax(e) {
+        function reloadPoke(e){
+            if (pkmn){
+                var responseDiv = document.querySelector("#pokemon");
+                responseDiv.innerHTML = loading;
+                sendAjax(e,pkmn.id);
+            }
+            
+        }
+        
+        function searchPoke(e){
             var responseDiv = document.querySelector("#pokemon");
             responseDiv.innerHTML = loading;
-            var action = document.querySelector("#proxyForm").getAttribute("action");
+            
             var query = document.querySelector("#url").value;
+            sendAjax(e,query);
+        }
+        
+        //method for searching specific pokemon, based on in class example
+        function sendAjax(e, query) {
+            
+            
+            var action = document.querySelector("#proxyForm").getAttribute("action");
             
             if(!query || query.length === 0) {
                 e.preventDefault();
@@ -141,28 +162,10 @@
             var responseDiv = document.querySelector("#pokemon");
             responseDiv.innerHTML = loading;
             var action = document.querySelector("#proxyForm").getAttribute("action");
-            var num = Math.round(Math.random() * 712) + 1;
+            var num = Math.round(Math.random() * 720) + 1; //pokeapi is missing gen 7
             var query = query = "http://pokeapi.co/api/v2/pokemon/" + num;
             
-            query = encodeURIComponent(query);
-            
-            var url = action + "?url=" + query;
-            
-            //console.dir(url);
-            
-            var xhr = new XMLHttpRequest();
-            
-            xhr.onload = function(){
-                var pokemon = JSON.parse(xhr.responseText);
-                displayPokemon(pokemon);
-            };
-            
-            xhr.open('GET', url);
-            
-            xhr.send();
-            
-            e.preventDefault();
-            return false;
+            sendAjax(e,num);
         }
         
         //the xhr onload function
@@ -180,7 +183,7 @@
                     imgurl = pokemon.sprites.front_default;
                 }
                 //shiny sprite
-                else if (shiny){
+                else if (shiny && pokemon.id <= 649){
                     //start with default - shiny male
                     imgurl = pokemon.sprites.front_shiny;
                     
@@ -262,7 +265,7 @@
             //to get around hotlinking issue i went to pokeapi's github and downloaded all the sprites
             //i dont like this solution but i dont know what else to do
             var imgurl = "images/sprites/pokemon/";
-            if (shiny){
+            if (shiny && id <= 649){ //pokeapi is missing shiny sprites for gen 6 for some reason
                 
                 if (female && pkmn.sprites.front_shiny_female){
                     imgurl += "shiny/female/" + id + ".png"; 
@@ -280,77 +283,53 @@
                 }
             }
             
+          
+            
             //now i can get a color palette
             
             //prepare query
-            var query = "http://mkweb.bcgsc.ca/color-summarizer/?precision=low&jsonp=1&num_clusters=5&url="; + imgurl;
-            query = encodeURIComponent(query);
             var action = document.querySelector("#proxyForm").getAttribute("action");
+            var query = "http://mkweb.bcgsc.ca/color-summarizer/?precision=low&json=1&num_clusters=5&url=" + imgurl;
+            query = encodeURIComponent(query);
+           
             var url = action + "?url=" + query;
+            console.dir(url);
             
             //send request
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function(){
                 console.dir(xhr.response);
+                var responsediv = document.querySelector("#palette");
+                responsediv.innerHTML = xhr.responseText;
             };
             
             xhr.open('GET', url);
             
             xhr.send();
             
+            
+            $.ajax({
+                cache: false,
+                type: "get",
+                dataType: "json",
+                url: url,
+                success: function(result, status, xhr){
+                    console.dir(result);  
+                },
+                error:function(result,status,xhr){
+                    console.dir(result);
+                }
+            });
+            
+
+            
             //e.preventDefault();
             return false;
             
         }
         
-        //http://jsfiddle.net/xLF38/818/
-        function getAverageRGB(imgEl) {
-            
-            var blockSize = 5, // only visit every 5 pixels
-                defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
-                canvas = document.createElement('canvas'),
-                context = canvas.getContext && canvas.getContext('2d'),
-                data, width, height,
-                i = -4,
-                length,
-                rgb = {r:0,g:0,b:0},
-                count = 0;
-            
-            if (!context) {
-                return defaultRGB;
-            }
-            
-            height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-            width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-            
-            context.drawImage(imgEl, 0, 0);
-            
-            try {
-                data = context.getImageData(0, 0, width, height);
-            } catch(e) {
-                /* security error, img on diff domain */alert('x');
-                return defaultRGB;
-            }
-            
-            length = data.data.length;
-            
-            while ( (i += blockSize * 4) < length ) {
-                ++count;
-                rgb.r += data.data[i];
-                rgb.g += data.data[i+1];
-                rgb.b += data.data[i+2];
-            }
-            
-            // ~~ used to floor values
-            rgb.r = ~~(rgb.r/count);
-            rgb.g = ~~(rgb.g/count);
-            rgb.b = ~~(rgb.b/count);
-            
-            return rgb;
-            
-        }
-
+        
         
     </script>
 </head>

@@ -62,6 +62,7 @@ var responseHeaders = {
 var fs = require('fs');
 var index = fs.readFileSync(__dirname + "/../index.html");
 
+
 //Method to handle our page requests. The HTTP request from the browser will be
 //automatically passed in as request. The pre-formatted response object will be
 //automatically passed in as response so we can add to it and send it back.
