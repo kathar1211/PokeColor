@@ -105,6 +105,7 @@ function onRequest(request, response) {
         //into a usable object instead of a string
   
         //console.dir(parsedUrl);
+        console.log(parsedUrl);
         
         if (parsedUrl.host === "pokecolor.herokuapp.com"){
             
