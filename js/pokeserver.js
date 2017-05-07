@@ -68,6 +68,10 @@ var index = fs.readFileSync(__dirname + "/../index.html");
 var static = require('node-static');
 var imageServer = new static.Server('../images');
 
+//trying out getcolor library
+const path = require('path');
+const getColors = require('get-image-colors');
+
 
 //Method to handle our page requests. The HTTP request from the browser will be
 //automatically passed in as request. The pre-formatted response object will be
@@ -100,11 +104,13 @@ function onRequest(request, response) {
         //grab the query string from the parsedURL and parse it
         //into a usable object instead of a string
   
-        console.dir(parsedUrl);
+        //console.dir(parsedUrl);
         
         if (parsedUrl.host === "pokecolor.herokuapp.com"){
-            console.dir("imageserver serving");
-            imageServer.serve(request,response);
+            
+            //trying to access static server images
+            //console.dir("imageserver serving");
+            //imageServer.serve(request,response);
         }
             
         else{
