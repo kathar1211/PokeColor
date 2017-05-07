@@ -87,7 +87,7 @@ function onRequest(request, response) {
     //console.dir(params);
     
     //check if params does not have a url field (meaning no url came in request)
-    if(!params.url) {
+    if(!params.url && !params.pokemon) {
    
         //open up the home page
         response.writeHead(200, {"Content-Type":"text/html"});
