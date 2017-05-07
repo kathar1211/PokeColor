@@ -101,8 +101,12 @@ function onRequest(request, response) {
   
         console.dir(parsedUrl);
         
+        try{
+            
+            fileServer.serve(request,response);
+        }
         //not sure how to make sense of this parsed url yet
-        if (parsedUrl.hostname === "pokeapi.co" || parsedUrl.hostname === "mkweb.bcgsc.ca"){
+        catch(exception){
                 
             
             
@@ -114,10 +118,7 @@ function onRequest(request, response) {
             requestHandler(params.url).pipe(response);
         }
         //otherwise let the static fileserver handle it
-        else{
-            
-            fileServer.serve(request,response);
-        }
+        
     
     
     }
