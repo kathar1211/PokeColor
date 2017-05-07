@@ -95,7 +95,7 @@ function onRequest(request, response) {
     try{
         
         //here we need to check whether a pokemon request or an image request is happening
-        var parsedUrl = url.parse(req.url);
+        var parsedUrl = url.parse(request.url);
         //grab the query string from the parsedURL and parse it
         //into a usable object instead of a string
   
