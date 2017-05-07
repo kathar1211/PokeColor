@@ -97,7 +97,7 @@ function onRequest(request, response) {
     }
     
     //try in case URL is invalid or fails
-    //try{
+    try{
         
         //here we need to check whether a pokemon request or an image request is happening
         var parsedUrl = url.parse(request.url);
@@ -110,10 +110,11 @@ function onRequest(request, response) {
         if (parsedUrl.host === "pokecolor.herokuapp.com"){
             
             //trying to access static server images
-            //console.dir("imageserver serving");
+            console.dir("imageserver serving");
+            console.dir(request);
             //imageServer.serve(request,response);
         }
-        else if (parsedUrl.pathname === "/color"){
+        /*else if (parsedUrl.pathname === "/color"){
             if (params.pokemon){
                 var colors;
                 getColors(path.join(__dirname, params.pokemon)).then(colors => {});
@@ -121,7 +122,7 @@ function onRequest(request, response) {
                 response.write(JSON.stringify(colors));
                 response.end();
             }
-        }
+        }*/
             
         else{
         //write a 200 okay status code and send CORS headers to allow client to access this
@@ -135,8 +136,8 @@ function onRequest(request, response) {
         
     
     
-    //}
-    /*
+    }
+    
     catch(exception) {
       console.dir(exception);
       //write a 500 error out
@@ -158,7 +159,7 @@ function onRequest(request, response) {
       //response.write(responseMessage);
       //send response
       response.end();
-    }*/
+    }
 }
 
 //create an HTTP sever and forward all requests to onRequest.

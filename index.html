@@ -267,8 +267,8 @@
             //var imgurl = "images/sprites/pokemon/";
             
             //img url is now hosted on server
-            //var imgurl = "pokecolor.heroku.com/images/sprites/pokemon/";
-            var imgurl = "sprites/pokemon/";
+            var imgurl = "pokecolor.heroku.com/images/sprites/pokemon/";
+            //var imgurl = "sprites/pokemon/";
             if (shiny && id <= 649){ //pokeapi is missing shiny sprites for gen 6 for some reason
                 
                 if (female && pkmn.sprites.front_shiny_female){
@@ -296,32 +296,32 @@
 //            }
             
             //testing npm get image color
-            var action = "/color";
-             var data = "pokemon=" + imgurl;
-        
-        $.ajax({
-          cache: false,
-          type: "get",
-          url: action,
-          data: data,
-          dataType: "json",
-          success: function (result, status, xhr) {
-            console.dir(result);
-            //convert to string we can see on screen
-            var resultText = JSON.stringify(result);
-            $("#palette").text(resultText);
-          },
-          error: function (error, status, xhr) {
-              console.dir(error);
-            var resultText = JSON.stringify(error);
-            $("#palette").text(resultText);
-          }
-        });
+//            var action = "/color";
+//             var data = "pokemon=" + imgurl;
+//        
+//        $.ajax({
+//          cache: false,
+//          type: "get",
+//          url: action,
+//          data: data,
+//          dataType: "json",
+//          success: function (result, status, xhr) {
+//            console.dir(result);
+//            //convert to string we can see on screen
+//            var resultText = JSON.stringify(result);
+//            $("#palette").text(resultText);
+//          },
+//          error: function (error, status, xhr) {
+//              console.dir(error);
+//            var resultText = JSON.stringify(error);
+//            $("#palette").text(resultText);
+//          }
+//        });
             
             //now i can get a color palette
             
             //prepare query
-            /*var action = document.querySelector("#proxyForm").getAttribute("action");
+            var action = document.querySelector("#proxyForm").getAttribute("action");
             var query = "http://mkweb.bcgsc.ca/color-summarizer/?precision=low&json=1&num_clusters=5&url=" + imgurl;
             query = encodeURIComponent(query);
            
@@ -340,7 +340,7 @@
             xhr.open('GET', url);
             
             xhr.send();
-            */
+            //*/
             
             
 //            $.ajax({
