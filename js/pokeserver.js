@@ -103,6 +103,7 @@ function onRequest(request, response) {
         console.dir(parsedUrl);
         
         if (parsedUrl.host === "pokecolor.herokuapp.com"){
+            console.dir("imageserver serving");
             imageServer.serve(request,response);
         }
             
