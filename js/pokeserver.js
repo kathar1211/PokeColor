@@ -42,6 +42,7 @@ var requestHandler = require('request');
 var port = process.env.PORT || process.env.NODE_PORT || 3000;
 //var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var ip = '127.0.0.1';
+const url = require('url');
 
 //Setup our headers for CORS support. This will allow CORS
 //support in a browser page. 
