@@ -124,6 +124,6 @@ function onRequest(request, response) {
 
 //create an HTTP sever and forward all requests to onRequest.
 //start listening on the specified port
-http.createServer(onRequest).listen(port,ip);
+http.createServer(onRequest).listen(port);
 
 console.log("Listening on 127.0.0.1:" + port);
