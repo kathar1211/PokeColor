@@ -73,7 +73,7 @@
         //    http://swapi.co/api/people/1/
         
         window.onload = init;
-        var loading = "<img src='./images/loading.gif'>"
+        var loading = "<img src='https://s-ec.bstatic.com/static/img/destfinder/loader-96/632f6073e5d69111657019f8d4b209e7970cc9f1.gif'>"
         
         //keep track of requests for shiny or female pokemon
         var shiny = false;
@@ -283,8 +283,16 @@
                 }
             }
             
-          
             
+            //retrying average color function with local images
+            var colorimg = new Image(96,96);
+            colorimg.src = imgurl;
+            colorimg.onload = function(){
+                console.dir(getAverageRGB(colorimg));
+            }
+            
+          
+            /*
             //now i can get a color palette
             
             //prepare query
@@ -307,20 +315,21 @@
             xhr.open('GET', url);
             
             xhr.send();
+            */
             
             
-            $.ajax({
-                cache: false,
-                type: "get",
-                dataType: "json",
-                url: url,
-                success: function(result, status, xhr){
-                    console.dir(result);  
-                },
-                error:function(result,status,xhr){
-                    console.dir(result);
-                }
-            });
+//            $.ajax({
+//                cache: false,
+//                type: "get",
+//                dataType: "json",
+//                url: url,
+//                success: function(result, status, xhr){
+//                    console.dir(result);  
+//                },
+//                error:function(result,status,xhr){
+//                    console.dir(result);
+//                }
+//            });
             
 
             
@@ -329,12 +338,60 @@
             
         }
         
-        
+        //avg color function from http://jsfiddle.net/xLF38/818/
+        function getAverageRGB(imgEl) {
+            
+            var blockSize = 5, // only visit every 5 pixels
+                defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
+                canvas = document.createElement('canvas'),
+                context = canvas.getContext && canvas.getContext('2d'),
+                data, width, height,
+                i = -4,
+                length,
+                rgb = {r:0,g:0,b:0},
+                count = 0;
+            
+            if (!context) {
+                return defaultRGB;
+            }
+            
+            height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+            width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+            
+            context.drawImage(imgEl, 0, 0);
+            
+            try {
+                data = context.getImageData(0, 0, width, height);
+            } catch(e) {
+                /* security error, img on diff domain */alert('x');
+                return defaultRGB;
+            }
+            
+            length = data.data.length;
+            
+            while ( (i += blockSize * 4) < length ) {
+                ++count;
+                rgb.r += data.data[i];
+                rgb.g += data.data[i+1];
+                rgb.b += data.data[i+2];
+            }
+            
+            // ~~ used to floor values
+            rgb.r = ~~(rgb.r/count);
+            rgb.g = ~~(rgb.g/count);
+            rgb.b = ~~(rgb.b/count);
+            
+            return rgb;
+            
+            
+        }
         
     </script>
 </head>
 <body>
-  <form id="proxyForm" action="https://pokecolor.herokuapp.com/" method="POST">
+    <!--action="http://127.0.0.1:3000"-->
+    <!--action="https://pokecolor.herokuapp.com:3000"-->
+  <form id="proxyForm" action="https://pokecolor.herokuapp.com:3000" method="POST">
       <label for="url">Search Pokemon by Name or Number: </label>
       <input type="text" name="url" id="url">
       <input type="submit" value="Submit">
