@@ -113,6 +113,15 @@ function onRequest(request, response) {
             //console.dir("imageserver serving");
             //imageServer.serve(request,response);
         }
+        else if (parsedUrl.pathname === "/color"){
+            if (params.pokemon){
+                var colors;
+                getColors(path.join(__dirname, params.pokemon)).then(colors => {});
+                response.writeHead(200, responseHeaders);
+                response.write(JSON.stringify(colors));
+                response.end();
+            }
+        }
             
         else{
         //write a 200 okay status code and send CORS headers to allow client to access this
