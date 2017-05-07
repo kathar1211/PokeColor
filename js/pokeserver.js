@@ -84,7 +84,7 @@ function onRequest(request, response) {
     //Parse the querystring into a JS object of variables and values
     //PARAMS MUST BE ENCODED WITH encodeURIComponent
     var params = queryString.parse(query);
-    //console.dir(params);
+    console.log(params);
     
     //check if params does not have a url field (meaning no url came in request)
     if(!params.url && !params.pokemon) {
@@ -136,6 +136,7 @@ function onRequest(request, response) {
     
     
     }
+    /*
     catch(exception) {
       console.dir(exception);
       //write a 500 error out
@@ -157,7 +158,7 @@ function onRequest(request, response) {
       //response.write(responseMessage);
       //send response
       response.end();
-    }
+    }*/
 }
 
 //create an HTTP sever and forward all requests to onRequest.
