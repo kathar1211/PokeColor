@@ -97,7 +97,7 @@ function onRequest(request, response) {
     }
     
     //try in case URL is invalid or fails
-    try{
+    //try{
         
         //here we need to check whether a pokemon request or an image request is happening
         var parsedUrl = url.parse(request.url);
@@ -135,7 +135,7 @@ function onRequest(request, response) {
         
     
     
-    }
+    //}
     /*
     catch(exception) {
       console.dir(exception);
