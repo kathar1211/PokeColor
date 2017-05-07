@@ -308,12 +308,12 @@
           success: function (result, status, xhr) {
             console.dir(result);
             //convert to string we can see on screen
-            //var resultText = JSON.stringify(result);
+            var resultText = JSON.stringify(result);
             $("#palette").text(resultText);
           },
           error: function (error, status, xhr) {
               console.dir(error);
-            //var resultText = JSON.stringify(error);
+            var resultText = JSON.stringify(error);
             $("#palette").text(resultText);
           }
         });
