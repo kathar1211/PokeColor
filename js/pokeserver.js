@@ -101,23 +101,15 @@ function onRequest(request, response) {
   
         console.dir(parsedUrl);
         
-        try{
+
             
-            fileServer.serve(request,response);
-        }
-        //not sure how to make sense of this parsed url yet
-        catch(exception){
-                
-            
-            
-            //write a 200 okay status code and send CORS headers to allow client to access this
-            response.writeHead(200, responseHeaders);
-        
-            //make a request to the url and pipe (feed) the returned ajax call to our client response
-            //Here we are connecting the next servers response back to our page.  
-            requestHandler(params.url).pipe(response);
-        }
-        //otherwise let the static fileserver handle it
+        //write a 200 okay status code and send CORS headers to allow client to access this
+        response.writeHead(200, responseHeaders);
+    
+        //make a request to the url and pipe (feed) the returned ajax call to our client response
+        //Here we are connecting the next servers response back to our page.  
+        requestHandler(params.url).pipe(response);
+     
         
     
     
