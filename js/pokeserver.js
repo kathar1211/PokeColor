@@ -63,6 +63,10 @@ var responseHeaders = {
 var fs = require('fs');
 var index = fs.readFileSync(__dirname + "/../index.html");
 
+//static library for images
+var static = require('node-static');
+var imageServer = new static.Server('../images');
+
 
 //Method to handle our page requests. The HTTP request from the browser will be
 //automatically passed in as request. The pre-formatted response object will be
@@ -89,14 +93,33 @@ function onRequest(request, response) {
     
     //try in case URL is invalid or fails
     try{
-      //write a 200 okay status code and send CORS headers to allow client to access this
-      response.writeHead(200, responseHeaders);
-      
-      //make a request to the url and pipe (feed) the returned ajax call to our client response
-      //Here we are connecting the next servers response back to our page.  
-      requestHandler(params.url).pipe(response);
         
+        //here we need to check whether a pokemon request or an image request is happening
+        var parsedUrl = url.parse(req.url);
+        //grab the query string from the parsedURL and parse it
+        //into a usable object instead of a string
+  
+        console.dir(parsedUrl);
         
+        //not sure how to make sense of this parsed url yet
+        if (parsedUrl.hostname === "pokeapi.co" || parsedUrl.hostname === "mkweb.bcgsc.ca"){
+                
+            
+            
+            //write a 200 okay status code and send CORS headers to allow client to access this
+            response.writeHead(200, responseHeaders);
+        
+            //make a request to the url and pipe (feed) the returned ajax call to our client response
+            //Here we are connecting the next servers response back to our page.  
+            requestHandler(params.url).pipe(response);
+        }
+        //otherwise let the static fileserver handle it
+        else{
+            
+            fileServer.serve(request,response);
+        }
+    
+    
     }
     catch(exception) {
       console.dir(exception);
