@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
     <title>PokeColor</title>
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
+            font-family: VT323;
+            font-size: 1.2em;
+        }
+        
+        #controls{
+            line-height: 1%;
         }
         
         form {
@@ -33,6 +40,7 @@
             display: block;
             border-style: solid;
             border-width: 2px;
+            border-color: darkblue;
             /*float:left;
             margin-left: calc(50% - 150px);*/
             
@@ -201,11 +209,23 @@
                 }
                 
                 
-                responseDiv.innerHTML = "<img id='pokepic' src=" + imgurl + " width='96' height='96'>";
+                //responseDiv.innerHTML = "<img id='pokepic' src=" + imgurl + " width='96' height='96'>";
                 
-                //get the palette
-                //getPalette(imgurl);
-                getPalette(pokemon.id);
+                var pic = new Image(96,96);
+                pic.id = "pokepic";
+                pic.src = imgurl;
+                responseDiv.appendChild(pic);
+                pic.onload = function(){
+                    
+                    fadeinPokepic(pic);
+                
+                    //get the palette
+                    //getPalette(imgurl);
+                    getPalette(pokemon.id);
+                }
+                
+                
+                
             }
             else if (pokemon.message){
                 responseDiv.textContent = pokemon.message;
@@ -411,24 +431,52 @@
             
         }
         
+        //fading in the new pokemon with css (not jquery)
+        //http://stackoverflow.com/questions/6121203/how-to-do-fade-in-and-fade-out-with-javascript-and-css
+        function fadeinPokepic(pic){
+            //var pokepic = document.getElementById("#pokepic");
+            var pokepic = pic;
+            var opacity = .1;
+            pokepic.style.opacity = opacity;
+            pokepic.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+            
+            //dont try to fade in pokepic if it doesnt exist
+            if (pokepic){
+                //loop and increase opacity until totally opaque
+                var timer = setInterval(function(){
+                    //finish when opacity reaches 1
+                    if (opacity >= 1){
+                        clearInterval(timer);
+                    }
+                    pokepic.style.opacity = opacity;
+                    pokepic.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+                    opacity *= 1.1;
+                    
+                },10);
+            }
+        }
+        
     </script>
 </head>
 <body>
+    <div id="controls">
     <!--action="http://127.0.0.1:3000"-->
     <!--action="https://pokecolor.herokuapp.com:3000"-->
     <!--action="https://pokecolor.herokuapp.com/"-->
-  <form id="proxyForm" action="https://pokecolor.herokuapp.com/" method="POST">
-      <label for="url">Search Pokemon by Name or Number: </label>
-      <input type="text" name="url" id="url">
+  <form id="proxyForm" action="http://127.0.0.1:3000" method="POST">
+      <label for="url">Search Pokemon: </label>
+      <input type="text" name="url" id="url" title="Lookup Pokemon by name or by number. Pokeapi does not currently have information on Gen 7 Pokemon so please keep numbers between 1 and 721.">
       <input type="submit" value="Submit">
-      <button id="randomButton">Or Get a Random Pokemon</button>
+      <p>OR</p>
+      <button id="randomButton">Get a Random Pokemon</button>
   </form>
+        </div>
 <div id="content">
     <div id="pokeoptions">
     <div id="pokemon">
     
     </div>
-    <label></label><input type="checkbox" id="checkshiny">Shiny</label>
+    <label></label><input type="checkbox" id="checkshiny" title="Pokeapi does not currently have shiny sprites for Gen 6 Pokemon">Shiny</label>
 
      <select id="genderSelect">
          <option value = "false">Male</option>

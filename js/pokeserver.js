@@ -112,7 +112,7 @@ function onRequest(request, response) {
             //trying to access static server images
             console.dir("imageserver serving");
             console.dir(request);
-            //imageServer.serve(request,response);
+            imageServer.serve(request,response);
         }
         /*else if (parsedUrl.pathname === "/color"){
             if (params.pokemon){
@@ -150,14 +150,7 @@ function onRequest(request, response) {
       
       //stringify JSON message and write it to response
       response.write(JSON.stringify(responseMessage));
-      
-      //get that pokemon sprite
-      //var pokemon = JSON.parse(responseMessage);
-      //var pokesprite = "<img src=" + pokemon.sprites.front_default + ">";
-      //response.write("test");
-      //response.write("<img src=" + pokemon.sprites.front_default + ">");
-      //response.write(responseMessage);
-      //send response
+
       response.end();
     }
 }
