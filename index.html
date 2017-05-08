@@ -11,10 +11,37 @@
             padding: 0;
             font-family: VT323;
             font-size: 1.2em;
+            background-image: url(https://68.media.tumblr.com/tumblr_m2ho64TuAu1qea3nso1_500.jpg);
         }
         
-        #controls{
+        #header{
+            text-align: center;
+            margin: auto;
+            width:75%;
+        }
+        
+        #header h3, h4{
+            color:darkblue;
+            padding: 0;
+            margin:0;
+        }
+        
+        #header img{
+            /*default size is 613px wide*/
+            max-width: 613px;
+            width: 100%;
+        }
+        
+        #controls p{
             line-height: 1%;
+        }
+        
+        .button{
+            font-family: VT323;
+            font-size: 1.0em;
+            border-radius: 10px;
+            background-color: darkblue;
+            color:floralwhite;
         }
         
         form {
@@ -62,8 +89,16 @@
             
         }
         #content{
-            width:90%;
+            max-width: 613px;
+            width:75%;
             margin: auto;
+            background-color: #FFC935;
+            border-style: groove;
+            border-width: 4px;
+            border-color: darkblue;
+            border-radius: 25px;
+            padding-top: 1em;
+            padding-bottom: 1em;
         }
         
     
@@ -459,26 +494,37 @@
     </script>
 </head>
 <body>
-    <div id="controls">
+    
+    <div id="header">
+    <img src="https://raw.githubusercontent.com/kathar1211/PokeColor/master/pokecolorlogo.png">
+        <h3>A Color Palette Generator for Pokemon Fans</h3>
+        <h4>(Does not currently generate palettes)</h4>
+    </div>
+    
+
+<div id="content">
+    
+    
+        <div id="controls">
     <!--action="http://127.0.0.1:3000"-->
     <!--action="https://pokecolor.herokuapp.com:3000"-->
     <!--action="https://pokecolor.herokuapp.com/"-->
-  <form id="proxyForm" action="http://127.0.0.1:3000" method="POST">
+  <form id="proxyForm" action="https://pokecolor.herokuapp.com/" method="POST">
       <label for="url">Search Pokemon: </label>
       <input type="text" name="url" id="url" title="Lookup Pokemon by name or by number. Pokeapi does not currently have information on Gen 7 Pokemon so please keep numbers between 1 and 721.">
-      <input type="submit" value="Submit">
+      <input type="submit" class="button" value="Submit">
       <p>OR</p>
-      <button id="randomButton">Get a Random Pokemon</button>
+      <button id="randomButton" class="button">Get a Random Pokemon</button>
   </form>
         </div>
-<div id="content">
+    
     <div id="pokeoptions">
     <div id="pokemon">
     
     </div>
     <label></label><input type="checkbox" id="checkshiny" title="Pokeapi does not currently have shiny sprites for Gen 6 Pokemon">Shiny</label>
 
-     <select id="genderSelect">
+     <select id="genderSelect" class="button">
          <option value = "false">Male</option>
          <option value = "true">Female</option>
      </select>
