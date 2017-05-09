@@ -16,7 +16,8 @@
         
         .tint {
             z-index: 1;
-            height: 100%;
+            height: 150%;
+            overflow-y: hidden;
             width: 100%;
             position: absolute;
             top: 0px;
@@ -214,7 +215,7 @@
             var url = action + "?url=" + query;
             
             //console.dir(url);
-            
+            /*
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function(){
@@ -247,6 +248,34 @@
                 }
             
             }
+            */
+            
+            //testing ajax request for fail condition
+            $.ajax({
+                cache: false,
+                type: "get",
+                dataType: "json",
+                url: url,
+                success: function(result, status, xhr){
+                    var pokemon = JSON.parse(xhr.responseText);
+                    displayPokemon(pokemon);
+                },
+                error:function(result,status,xhr){
+                    var localquery = document.querySelector("#url").value;
+                    var localPoke = JSON.parse(localStorage.getItem(localquery));
+                
+                    //if local storage instance dne display error message
+                    if (localPoke === undefined || localPoke === null || localPoke.length === 0 ){
+                        //responseDiv.textContent = pokemon.message;
+                        //do nothing
+                    }
+                    //othereise try again with local storage pkmn
+                    else{
+                        pkmn = localPoke;
+                        displayPokemon(localPoke);
+                    }
+                }
+            });
             
         
             e.preventDefault();
@@ -459,7 +488,7 @@
             //console.dir(url);
             
             //send request
-            var xhr = new XMLHttpRequest();
+            /*var xhr = new XMLHttpRequest();
             
             xhr.onload = function(){
                 //console.dir(xhr.response);
@@ -475,18 +504,31 @@
             //*/
             
             
-//            $.ajax({
-//                cache: false,
-//                type: "get",
-//                dataType: "json",
-//                url: url,
-//                success: function(result, status, xhr){
-//                    console.dir(result);  
-//                },
-//                error:function(result,status,xhr){
-//                    console.dir(result);
-//                }
-//            });
+            $.ajax({
+                cache: false,
+                type: "get",
+                dataType: "json",
+                url: url,
+                success: function(result, status, xhr){
+                    var pJSON = JSON.parse(xhr.responseText);
+                    displayPalette(pJSON.clusters);
+                },
+                error:function(result,status,xhr){
+                    //check for local storage
+                    var id = "palette" + pkmn.id + shiny + female;
+                    var localPalette = JSON.parse(localStorage.getItem(id));
+                
+                    //if local storage instance dne display error message
+                    if (localPalette === undefined || localPalette === null || localPalette.length === 0 ){
+                        //responseDiv.textContent = pokemon.message;
+                        //do nothing
+                    }
+                    //othereise try again with local storage 
+                    else{
+                        displayPalette(localPalette);
+                    }
+                }
+            });
             
 
             
@@ -495,6 +537,7 @@
             
         }
         
+        //now accepts just the clusters object, dont need all that other stuff
         async function displayPalette(jsonPalette){
             //console.dir(jsonPalette);
             //console.dir(jsonPalette.clusters);
@@ -502,9 +545,14 @@
             responsediv.innerHTML = "";
             //the first color is always black because that's how color summarizer interpets transparency
             //just skipping the first color to avoid this
+            
+            //store the palette info
+            var id = "palette" + pkmn.id + shiny + female;
+            localStorage.setItem(id,JSON.stringify(jsonPalette));
+            
             for (var i = 1; i <6;i++){
                 //console.dir(color);
-                var color = jsonPalette.clusters[i];
+                var color = jsonPalette[i];
                 var name = color.neighbours.substring(0,color.neighbours.indexOf('['));
                 name = name.split('_').join(" ");
                 var hex = color.hex[0];
