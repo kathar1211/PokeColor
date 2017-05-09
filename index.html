@@ -223,9 +223,32 @@
             };
             
             xhr.open('GET', url);
+            //xhr.send();
             
-            xhr.send();
             
+            
+            //xhr send will fail if not connected to internet
+            try{
+                xhr.send();
+            }
+            //if that happens check localstorage
+            catch(exception){
+                var localquery = document.querySelector("#url").value;
+                var localPoke = JSON.parse(localStorage.getItem(localquery));
+                
+                //if local storage instance dne display error message
+                if (localPoke === undefined || localPoke === null || localPoke.length === 0 ){
+                    //responseDiv.textContent = pokemon.message;
+                    //do nothing
+                }
+                //othereise try again with local storage pkmn
+                else{
+                    displayPokemon(localPoke);
+                }
+            
+            }
+            
+        
             e.preventDefault();
             return false;
         }
