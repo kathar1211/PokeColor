@@ -87,7 +87,7 @@ function onRequest(request, response) {
     //console.log(params);
     
     //check for image requests
-    if(parsedUrl.pathname.substring(0,8) === '/images'){
+    if(parsedUrl.pathname.substring(0,8) === '/images/'){
         request.url = parsedUrl.pathname.substring(7);
         imageServer.serve(request, response);
         return;

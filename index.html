@@ -14,6 +14,22 @@
             background-image: url(https://68.media.tumblr.com/tumblr_m2ho64TuAu1qea3nso1_500.jpg);
         }
         
+        .tint {
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            /* blue ver
+            background: rgba(99, 154, 242, 0.6); 
+            */
+            /* yellow ver
+            background: rgba(242,237,99,.4);
+            */
+            background: rgba(99, 154, 242, 0.6); 
+        }
+        
         #header{
             text-align: center;
             margin: auto;
@@ -494,7 +510,7 @@
     </script>
 </head>
 <body>
-    
+    <div class="tint">
     <div id="header">
     <img src="https://raw.githubusercontent.com/kathar1211/PokeColor/master/pokecolorlogo.png">
         <h3>A Color Palette Generator for Pokemon Fans</h3>
@@ -534,5 +550,6 @@
         
     </div>
 </div>
+    </div>
 </body>
 </html>
