@@ -415,7 +415,7 @@
             query = encodeURIComponent(query);
            
             var url = action + "?url=" + query;
-            console.dir(url);
+            //console.dir(url);
             
             //send request
             var xhr = new XMLHttpRequest();
@@ -462,7 +462,7 @@
             //the first color is always black because that's how color summarizer interpets transparency
             //just skipping the first color to avoid this
             for (var i = 1; i <6;i++){
-                console.dir(color);
+                //console.dir(color);
                 var color = jsonPalette.clusters[i];
                 var name = color.neighbours.substring(0,color.neighbours.indexOf('['));
                 name = name.split('_').join(" ");
@@ -474,7 +474,8 @@
                 colordiv.classNames = "color";
                 colordiv.style.backgroundColor = hex;
                 //colordiv.innerHTML = "<p style='vertical-align: middle'>" + name + "</p>";
-                colordiv.innerHTML = "<p>" + name + "</p>";
+                //colordiv.innerHTML = "<p style='height:46px'>" + name + "</p>";
+                //colordiv.innerHTML = "<br>" + name;
                 
                 
                 //add up rgb values to determine if text should be black or white
@@ -494,6 +495,13 @@
                 colordiv.style.display = "inline-block";
                 //colordiv.style.verticalAlign = "middle";
                 colordiv.style.margin = "10px";
+                //colordiv.style.fontSize = ".8em";
+                
+                colordiv.style.border = "solid";
+                colordiv.style.borderWidth = "2px";
+                colordiv.style.borderColor = "black";
+
+                
                 
                 responsediv.appendChild(colordiv);
                 fadeinPokepic(colordiv);
@@ -582,7 +590,7 @@
     <div id="header">
     <img src="https://raw.githubusercontent.com/kathar1211/PokeColor/master/pokecolorlogo.png">
         <h3>A Color Palette Generator for Pokemon Fans</h3>
-        <h4>(Does not currently generate palettes)</h4>
+        <h4>Now featuring palette generation!</h4>
     </div>
     
 

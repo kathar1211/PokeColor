@@ -112,7 +112,7 @@ function onRequest(request, response) {
         //into a usable object instead of a string
   
         //console.dir(parsedUrl);
-        console.log(parsedUrl);
+       // console.log(parsedUrl);
         
         /*else if (parsedUrl.pathname === "/color"){
             if (params.pokemon){
@@ -139,7 +139,7 @@ function onRequest(request, response) {
     }
     
     catch(exception) {
-      console.dir(exception);
+      //console.dir(exception);
       //write a 500 error out
       response.writeHead(500, responseHeaders);
       
