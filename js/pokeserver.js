@@ -78,13 +78,20 @@ const getColors = require('get-image-colors');
 //automatically passed in as response so we can add to it and send it back.
 function onRequest(request, response) {
     //Split after the ? mark to get the query string (key=value pairs)
-
-    var query = request.url.split('?')[1];
+    var parsedUrl = url.parse(request.url);
+    
     
     //Parse the querystring into a JS object of variables and values
     //PARAMS MUST BE ENCODED WITH encodeURIComponent
-    var params = queryString.parse(query);
-    console.log(params);
+    var params = queryString.parse(parsedUrl.query);
+    //console.log(params);
+    
+    //check for image requests
+    if(parsedUrl.pathname.substring(0,8) === '/images'){
+        request.url = parsedUrl.pathname.substring(7);
+        imageServer.serve(request, response);
+        return;
+    }
     
     //check if params does not have a url field (meaning no url came in request)
     if(!params.url && !params.pokemon) {
@@ -100,20 +107,13 @@ function onRequest(request, response) {
     try{
         
         //here we need to check whether a pokemon request or an image request is happening
-        var parsedUrl = url.parse(request.url);
+        
         //grab the query string from the parsedURL and parse it
         //into a usable object instead of a string
   
         //console.dir(parsedUrl);
         console.log(parsedUrl);
         
-        if (parsedUrl.host === "pokecolor.herokuapp.com"){
-            
-            //trying to access static server images
-            console.dir("imageserver serving");
-            console.dir(request);
-            imageServer.serve(request,response);
-        }
         /*else if (parsedUrl.pathname === "/color"){
             if (params.pokemon){
                 var colors;

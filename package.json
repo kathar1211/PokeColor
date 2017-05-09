@@ -1,10 +1,10 @@
 {
   "name": "pokecolor",
   "version": "1.0.0",
-    "engines":{
-        "node":"7.9.0",
-        "npm":"4.2.0"
-    },
+  "engines": {
+    "node": "7.9.0",
+    "npm": "4.2.0"
+  },
   "description": "a color palette generator for pokemon fans",
   "main": "./index.html",
   "scripts": {
@@ -12,5 +12,10 @@
     "start": "node ./js/pokeserver.js"
   },
   "author": "Katherine Harrison",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "get-image-colors": "^1.8.1",
+    "node-static": "^0.7.9",
+    "request": "^2.81.0"
+  }
 }
