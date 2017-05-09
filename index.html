@@ -454,7 +454,7 @@
             
         }
         
-        function displayPalette(jsonPalette){
+        async function displayPalette(jsonPalette){
             //console.dir(jsonPalette);
             //console.dir(jsonPalette.clusters);
             var responsediv = document.querySelector("#palette");
@@ -507,7 +507,7 @@
                 fadeinPokepic(colordiv);
                 
                 //sleep so colors load in one at a time
-                //await sleep(1000);
+                await sleep(500);
                 
             }
             
