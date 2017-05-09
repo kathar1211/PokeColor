@@ -506,6 +506,9 @@
                 responsediv.appendChild(colordiv);
                 fadeinPokepic(colordiv);
                 
+                //sleep so colors load in one at a time
+                await sleep(1000);
+                
             }
             
         }
@@ -556,6 +559,11 @@
             return rgb;
             
             
+        }
+        
+        //http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+        function sleep(ms){
+            return new Promise(resolve => setTimeout(resolve,ms));
         }
         
         //fading in the new pokemon with css (not jquery)
