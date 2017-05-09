@@ -124,14 +124,14 @@ function onRequest(request, response) {
             }
         }*/
             
-        else{
+        
         //write a 200 okay status code and send CORS headers to allow client to access this
         response.writeHead(200, responseHeaders);
     
         //make a request to the url and pipe (feed) the returned ajax call to our client response
         //Here we are connecting the next servers response back to our page.  
         requestHandler(params.url).pipe(response);
-        }
+        
      
         
     
