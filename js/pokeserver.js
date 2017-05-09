@@ -66,7 +66,7 @@ var index = fs.readFileSync(__dirname + "/../index.html");
 
 //static library for images
 var static = require('node-static');
-var imageServer = new static.Server('../images');
+var imageServer = new static.Server(__dirname + '/../images');
 
 //trying out getcolor library
 const path = require('path');
