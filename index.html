@@ -98,14 +98,16 @@
         #palette{
             /*width: 400px;
             height:150px;*/
-            margin: 0 auto;
+            
             text-align: center;
             display: block;
-            padding-top: 1.5em;
+            margin-top: 1.5em;
+            margin-left: 10%;
+            margin-right: 10%;
             /*float:right;*/
-            /*border-style: solid;
+            border-style: solid;
             border-width: 2px;
-            border-color: darkblue;*/
+            border-color: darkblue;
             
             
         }
@@ -129,6 +131,29 @@
             padding-top: 1em;
             padding-bottom: 1em;
         }
+        
+        
+        /*-- css slide up animation http://www.html.am/html-codes/marquees/css-slide-in-text.cfm */
+      
+        div.slide-up {
+            height:78px;
+            overflow:hidden;
+            animation: 1s slide-up;
+        }
+        
+        @keyframes slide-up {
+            from {
+                margin-top: 78px;
+                height: 100%; 
+            }
+            
+            to {
+                margin-top: 0%;
+                height: 100%;
+            }
+        }
+
+
         
     
     </style>
@@ -155,6 +180,9 @@
         var pkmn;
         
         function init() {
+            
+            //clear storage on reload
+            localStorage.clear();
             
             document.querySelector("#proxyForm").addEventListener("submit", searchPoke);
             document.querySelector("#randomButton").onclick = randomPoke;
@@ -565,7 +593,7 @@
                 //colordiv.innerHTML = "<p style='vertical-align: middle'>" + name + "</p>";
                 //colordiv.innerHTML = "<p style='height:46px'>" + name + "</p>";
                 //colordiv.innerHTML = "<br>" + name;
-                colordiv.title = name;
+                colordiv.innerHTML = "<p>"+name+"</p>";
                 
                 //add up rgb values to determine if text should be black or white
                 //765 is white, 0 is black, 382 is middle
@@ -578,20 +606,25 @@
                 }
                 
                 //stylin on em
-                colordiv.style.height = "96px";
-                colordiv.style.width = "96px";
-                colordiv.style.borderRadius = "48px";
-                colordiv.style.display = "inline-block";
+                //colordiv.style.height = "96px";
+                //colordiv.style.height = "2em";
+                
+                //colordiv.style.width = "500px";
+                //colordiv.style.borderRadius = "48px";
+                //colordiv.style.display = "inline-block";
                 //colordiv.style.verticalAlign = "middle";
-                colordiv.style.margin = "10px";
+                //colordiv.style.margin = "10px";
                 //colordiv.style.fontSize = ".8em";
                 
-                colordiv.style.border = "solid";
-                colordiv.style.borderWidth = "2px";
-                colordiv.style.borderColor = "black";
-
+                //colordiv.style.border = "solid";
+                //colordiv.style.borderWidth = "2px";
+                //colordiv.style.borderColor = "black";
                 
-                
+                //changed up palette stylings to something blockier
+                colordiv.style.padding = ".2em";
+                //colordiv.style.marginLeft = "10%";
+                //colordiv.style.marginRight = "10%";
+                //colordiv.className = "slide-up";
                 responsediv.appendChild(colordiv);
                 fadeinPokepic(colordiv);
                 
