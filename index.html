@@ -180,7 +180,9 @@
             if (pkmn){
                 var responseDiv = document.querySelector("#pokemon");
                 responseDiv.innerHTML = loading;
-                sendAjax(e,pkmn.id);
+                //sendAjax(e,pkmn.id);
+                //doesnt actually need to resend request if we have all the info, can just redisplay
+                displayPokemon(pkmn);
             }
             
         }
@@ -287,11 +289,25 @@
                     getPalette(pokemon.id);
                 }
                 
-                
+                //try saving in local storage with both name and number
+                localStorage.setItem(pokemon.species.name, JSON.stringify(pokemon));
+                localStorage.setItem(pokemon.id,JSON.stringify(pokemon));
                 
             }
             else if (pokemon.message){
-                responseDiv.textContent = pokemon.message;
+                //if an error ocurred, check local storage for pokemon info
+                var query = document.querySelector("#url").value;
+                var localPoke = JSON.parse(localStorage.getItem(query));
+                
+                //if local storage instance dne display error message
+                if (localPoke === undefined || localPoke === null || localPoke.length === 0 ){
+                    responseDiv.textContent = pokemon.message;
+                }
+                //othereise try again with local storage pkmn
+                else{
+                    displayPokemon(localPoke);
+                }
+                
             }
             else {
                 var imgurl = "images/sprites/pokemon/0.png";
@@ -299,6 +315,8 @@
             }
             
             //responseDiv.textContent = xhr.responseText;
+            
+            
         }
             
         //request color palette for pokemon picture
