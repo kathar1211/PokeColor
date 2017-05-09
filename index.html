@@ -27,7 +27,7 @@
             /* yellow ver
             background: rgba(242,237,99,.4);
             */
-            background: rgba(99, 154, 242, 0.6); 
+            background: rgba(242,237,99,.4);
         }
         
         #header{
@@ -95,15 +95,27 @@
         }
         
         #palette{
-            width: 400px;
-            height:150px;
+            /*width: 400px;
+            height:150px;*/
             margin: 0 auto;
             text-align: center;
-            display: inline;
+            display: block;
+            padding-top: 1.5em;
             /*float:right;*/
+            /*border-style: solid;
+            border-width: 2px;
+            border-color: darkblue;*/
             
             
         }
+        
+        .color{
+            height:100%;
+            width: 20%;
+            display:inline-block;
+            padding: .5em;
+        }
+        
         #content{
             max-width: 613px;
             width:75%;
@@ -337,6 +349,12 @@
             //i dont like this solution but i dont know what else to do
             //var imgurl = "images/sprites/pokemon/";
             
+            
+            //show that we loading
+            var responsediv = document.querySelector("#palette");
+            responsediv.innerHTML = loading;
+            
+            
             //img url is now hosted on server
             var imgurl = "https://pokecolor.herokuapp.com/images/sprites/pokemon/";
             //var imgurl = "sprites/pokemon/";
@@ -393,7 +411,7 @@
             
             //prepare query
             var action = document.querySelector("#proxyForm").getAttribute("action");
-            var query = "http://mkweb.bcgsc.ca/color-summarizer/?precision=low&json=1&num_clusters=5&url=" + imgurl;
+            var query = "http://mkweb.bcgsc.ca/color-summarizer/?precision=low&json=1&num_clusters=6&url=" + imgurl;
             query = encodeURIComponent(query);
            
             var url = action + "?url=" + query;
@@ -403,9 +421,11 @@
             var xhr = new XMLHttpRequest();
             
             xhr.onload = function(){
-                console.dir(xhr.response);
-                var responsediv = document.querySelector("#palette");
-                responsediv.innerHTML = xhr.responseText;
+                //console.dir(xhr.response);
+                //
+                //responsediv.innerHTML = xhr.responseText;
+                var pJSON = JSON.parse(xhr.responseText);
+                displayPalette(pJSON);
             };
             
             xhr.open('GET', url);
@@ -431,6 +451,54 @@
             
             //e.preventDefault();
             return false;
+            
+        }
+        
+        function displayPalette(jsonPalette){
+            //console.dir(jsonPalette);
+            //console.dir(jsonPalette.clusters);
+            var responsediv = document.querySelector("#palette");
+            responsediv.innerHTML = "";
+            //the first color is always black because that's how color summarizer interpets transparency
+            //just skipping the first color to avoid this
+            for (var i = 1; i <6;i++){
+                console.dir(color);
+                var color = jsonPalette.clusters[i];
+                var name = color.neighbours.substring(0,color.neighbours.indexOf('['));
+                name = name.split('_').join(" ");
+                var hex = color.hex[0];
+                //console.dir(name);
+                //console.dir(hex);
+                
+                var colordiv = document.createElement("div");
+                colordiv.classNames = "color";
+                colordiv.style.backgroundColor = hex;
+                //colordiv.innerHTML = "<p style='vertical-align: middle'>" + name + "</p>";
+                colordiv.innerHTML = "<p>" + name + "</p>";
+                
+                
+                //add up rgb values to determine if text should be black or white
+                //765 is white, 0 is black, 382 is middle
+                var rgbtotal = parseInt(color.rgb[0]) + parseInt(color.rgb[1]) + parseInt(color.rgb[2]);
+                if (rgbtotal > 333){
+                    colordiv.style.color = "#000000";
+                }
+                else{
+                    colordiv.style.color = "#ffffff";
+                }
+                
+                //stylin on em
+                colordiv.style.height = "96px";
+                colordiv.style.width = "96px";
+                colordiv.style.borderRadius = "48px";
+                colordiv.style.display = "inline-block";
+                //colordiv.style.verticalAlign = "middle";
+                colordiv.style.margin = "10px";
+                
+                responsediv.appendChild(colordiv);
+                fadeinPokepic(colordiv);
+                
+            }
             
         }
         
@@ -549,7 +617,7 @@
     <div id="palette">
         
     </div>
-</div>
+    </div>
     </div>
 </body>
 </html>
