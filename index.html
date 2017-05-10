@@ -242,41 +242,6 @@
             
             var url = action + "?url=" + query;
             
-            //console.dir(url);
-            /*
-            var xhr = new XMLHttpRequest();
-            
-            xhr.onload = function(){
-                var pokemon = JSON.parse(xhr.responseText);
-                displayPokemon(pokemon);
-            };
-            
-            xhr.open('GET', url);
-            //xhr.send();
-            
-            
-            
-            //xhr send will fail if not connected to internet
-            try{
-                xhr.send();
-            }
-            //if that happens check localstorage
-            catch(exception){
-                var localquery = document.querySelector("#url").value;
-                var localPoke = JSON.parse(localStorage.getItem(localquery));
-                
-                //if local storage instance dne display error message
-                if (localPoke === undefined || localPoke === null || localPoke.length === 0 ){
-                    //responseDiv.textContent = pokemon.message;
-                    //do nothing
-                }
-                //othereise try again with local storage pkmn
-                else{
-                    displayPokemon(localPoke);
-                }
-            
-            }
-            */
             
             //testing ajax request for fail condition
             $.ajax({
@@ -322,6 +287,7 @@
         }
         
         //the xhr onload function
+        //displays the pokemon on the page
         function displayPokemon(pokemon){
             var responseDiv = document.querySelector("#pokemon");
             responseDiv.innerHTML = "";
@@ -352,10 +318,8 @@
                         imgurl = pokemon.sprites.front_female;
                     }
                 }
-                
-                
-                //responseDiv.innerHTML = "<img id='pokepic' src=" + imgurl + " width='96' height='96'>";
-                
+                             
+                //create image object to put in div
                 var pic = new Image(96,96);
                 pic.id = "pokepic";
                 pic.src = imgurl;
@@ -393,8 +357,7 @@
                 var imgurl = "images/sprites/pokemon/0.png";
                 responseDiv.innerHTML = "<img id='pokepic' src=" + imgurl + " width='96' height='96'>";
             }
-            
-            //responseDiv.textContent = xhr.responseText;
+
             
             
         }
@@ -402,50 +365,6 @@
         //request color palette for pokemon picture
         //now takes an id # referring to a pokemon
         function getPalette(id){
-            //turns out pictaculous is bad :(
-//            //show that palette is loading
-//            var responseDiv = document.querySelector('#palette');
-//            responseDiv.innerHTML = loading;
-//            
-//            var url = 'http://pictaculous.com/api/1.0/';
-//            url = encodeURIComponent(url);
-//            
-//            var action = document.querySelector("#proxyForm").getAttribute("action");
-//            url = action + "?url=" + url;
-//            
-//            //grab the image from the pokemon div
-//            img = document.querySelector("#pokepic").src;
-//            //console.dir(img);
-//            //img = encodeURIComponent(img);
-//            //console.dir(img);
-//            
-//            var xhr = new XMLHttpRequest();
-//            
-//            xhr.onload = function(){
-//                responseDiv.innerHTML = "";
-//                //handle response and display palette
-//                
-//                console.dir((xhr.responseText));
-//            }
-//            
-//            xhr.open('POST', url, true);
-//            xhr.setRequestHeader("Content-Type","image/png");
-//            //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//            xhr.send(img);
-            
-            //try color thief
-//            var ct = new ColorThief();
-//            var palette = ct.getPalette(img);
-//            console.dir(palette);
-            //that didn't work
-            
-            //how about average color
-            //console.dir(getAverageRGB(img));
-            //also doesnt work
-            
-            //to get around hotlinking issue i went to pokeapi's github and downloaded all the sprites
-            //i dont like this solution but i dont know what else to do
-            //var imgurl = "images/sprites/pokemon/";
             
             
             //show that we loading
@@ -475,35 +394,6 @@
             }
             
             
-            //retrying average color function with local images
-//            var colorimg = new Image(96,96);
-//            colorimg.src = imgurl;
-//            colorimg.onload = function(){
-//                console.dir(getAverageRGB(colorimg));
-//            }
-            
-            //testing npm get image color
-//            var action = "/color";
-//             var data = "pokemon=" + imgurl;
-//        
-//        $.ajax({
-//          cache: false,
-//          type: "get",
-//          url: action,
-//          data: data,
-//          dataType: "json",
-//          success: function (result, status, xhr) {
-//            console.dir(result);
-//            //convert to string we can see on screen
-//            var resultText = JSON.stringify(result);
-//            $("#palette").text(resultText);
-//          },
-//          error: function (error, status, xhr) {
-//              console.dir(error);
-//            var resultText = JSON.stringify(error);
-//            $("#palette").text(resultText);
-//          }
-//        });
             
             //now i can get a color palette
             
@@ -515,22 +405,7 @@
             var url = action + "?url=" + query;
             //console.dir(url);
             
-            //send request
-            /*var xhr = new XMLHttpRequest();
-            
-            xhr.onload = function(){
-                //console.dir(xhr.response);
-                //
-                //responsediv.innerHTML = xhr.responseText;
-                var pJSON = JSON.parse(xhr.responseText);
-                displayPalette(pJSON);
-            };
-            
-            xhr.open('GET', url);
-            
-            xhr.send();
-            //*/
-            
+            //send request         
             
             $.ajax({
                 cache: false,
@@ -551,7 +426,7 @@
                         //responseDiv.textContent = pokemon.message;
                         //do nothing
                     }
-                    //othereise try again with local storage 
+                    //otherwise try again with local storage 
                     else{
                         displayPalette(localPalette);
                     }
@@ -566,6 +441,7 @@
         }
         
         //now accepts just the clusters object, dont need all that other stuff
+        //parses palette data and styles the divs to display on the page
         async function displayPalette(jsonPalette){
             //console.dir(jsonPalette);
             //console.dir(jsonPalette.clusters);
@@ -579,20 +455,16 @@
             localStorage.setItem(id,JSON.stringify(jsonPalette));
             
             for (var i = 1; i <6;i++){
-                //console.dir(color);
+
                 var color = jsonPalette[i];
                 var name = color.neighbours.substring(0,color.neighbours.indexOf('['));
                 name = name.split('_').join(" ");
                 var hex = color.hex[0];
-                //console.dir(name);
-                //console.dir(hex);
+
                 
                 var colordiv = document.createElement("div");
                 colordiv.classNames = "color";
                 colordiv.style.backgroundColor = hex;
-                //colordiv.innerHTML = "<p style='vertical-align: middle'>" + name + "</p>";
-                //colordiv.innerHTML = "<p style='height:46px'>" + name + "</p>";
-                //colordiv.innerHTML = "<br>" + name;
                 colordiv.innerHTML = "<p>"+name+"</p>";
                 
                 //add up rgb values to determine if text should be black or white
@@ -606,10 +478,9 @@
                 }
                 
                 //stylin on em
-                //colordiv.style.height = "96px";
-                //colordiv.style.height = "2em";
-                
-                //colordiv.style.width = "500px";
+                //orginally the colors were cute little circles
+                //colordiv.style.height = "96px";     
+                //colordiv.style.width = "96px";
                 //colordiv.style.borderRadius = "48px";
                 //colordiv.style.display = "inline-block";
                 //colordiv.style.verticalAlign = "middle";
@@ -621,9 +492,6 @@
                 //colordiv.style.borderColor = "black";
                 
                 //changed up palette stylings to something blockier
-                //colordiv.style.padding = ".2em";
-                //colordiv.style.marginLeft = "10%";
-                //colordiv.style.marginRight = "10%";
                 colordiv.className = "slide-up";
                 responsediv.appendChild(colordiv);
                 //fadeinPokepic(colordiv);
@@ -635,53 +503,6 @@
             
         }
         
-        //avg color function from http://jsfiddle.net/xLF38/818/
-        function getAverageRGB(imgEl) {
-            
-            var blockSize = 5, // only visit every 5 pixels
-                defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
-                canvas = document.createElement('canvas'),
-                context = canvas.getContext && canvas.getContext('2d'),
-                data, width, height,
-                i = -4,
-                length,
-                rgb = {r:0,g:0,b:0},
-                count = 0;
-            
-            if (!context) {
-                return defaultRGB;
-            }
-            
-            height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-            width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-            
-            context.drawImage(imgEl, 0, 0);
-            
-            try {
-                data = context.getImageData(0, 0, width, height);
-            } catch(e) {
-                /* security error, img on diff domain */alert('x');
-                return defaultRGB;
-            }
-            
-            length = data.data.length;
-            
-            while ( (i += blockSize * 4) < length ) {
-                ++count;
-                rgb.r += data.data[i];
-                rgb.g += data.data[i+1];
-                rgb.b += data.data[i+2];
-            }
-            
-            // ~~ used to floor values
-            rgb.r = ~~(rgb.r/count);
-            rgb.g = ~~(rgb.g/count);
-            rgb.b = ~~(rgb.b/count);
-            
-            return rgb;
-            
-            
-        }
         
         //http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
         function sleep(ms){

@@ -77,10 +77,9 @@ const getColors = require('get-image-colors');
 //automatically passed in as request. The pre-formatted response object will be
 //automatically passed in as response so we can add to it and send it back.
 function onRequest(request, response) {
-    //Split after the ? mark to get the query string (key=value pairs)
+    
+    
     var parsedUrl = url.parse(request.url);
-    
-    
     //Parse the querystring into a JS object of variables and values
     //PARAMS MUST BE ENCODED WITH encodeURIComponent
     var params = queryString.parse(parsedUrl.query);
@@ -105,37 +104,14 @@ function onRequest(request, response) {
     
     //try in case URL is invalid or fails
     try{
-        
-        //here we need to check whether a pokemon request or an image request is happening
-        
-        //grab the query string from the parsedURL and parse it
-        //into a usable object instead of a string
-  
-        //console.dir(parsedUrl);
-       // console.log(parsedUrl);
-        
-        /*else if (parsedUrl.pathname === "/color"){
-            if (params.pokemon){
-                var colors;
-                getColors(path.join(__dirname, params.pokemon)).then(colors => {});
-                response.writeHead(200, responseHeaders);
-                response.write(JSON.stringify(colors));
-                response.end();
-            }
-        }*/
-            
-        
+               
         //write a 200 okay status code and send CORS headers to allow client to access this
         response.writeHead(200, responseHeaders);
     
         //make a request to the url and pipe (feed) the returned ajax call to our client response
         //Here we are connecting the next servers response back to our page.  
         requestHandler(params.url).pipe(response);
-        
-     
-        
-    
-    
+
     }
     
     catch(exception) {
