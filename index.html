@@ -323,6 +323,7 @@
                 var pic = new Image(96,96);
                 pic.id = "pokepic";
                 pic.src = imgurl;
+                pic.title = pokemon.species.name;
                 responseDiv.appendChild(pic);
                 pic.onload = function(){
                     
