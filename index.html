@@ -138,12 +138,12 @@
         div.slide-up {
             height:78px;
             overflow:hidden;
-            animation: 1s slide-up;
+            animation: 500ms slide-up;
         }
         
         @keyframes slide-up {
             from {
-                margin-top: 78px;
+                margin-top: -50px;
                 height: 100%; 
             }
             
@@ -621,12 +621,12 @@
                 //colordiv.style.borderColor = "black";
                 
                 //changed up palette stylings to something blockier
-                colordiv.style.padding = ".2em";
+                //colordiv.style.padding = ".2em";
                 //colordiv.style.marginLeft = "10%";
                 //colordiv.style.marginRight = "10%";
-                //colordiv.className = "slide-up";
+                colordiv.className = "slide-up";
                 responsediv.appendChild(colordiv);
-                fadeinPokepic(colordiv);
+                //fadeinPokepic(colordiv);
                 
                 //sleep so colors load in one at a time
                 await sleep(500);
